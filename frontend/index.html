@@ -11,12 +11,18 @@
     <div class="main-container">
       <h1 class="question">YOU LOVE ME ????</h1>
       <div class="button-container">
-        <button id="yes-button">YES</button>
         <button
-          class="no_button"
-          id="runaway-btn"
+          id="yes-button"
           hx-trigger="click"
-          hx-post="/move-button"
+          hx-post="/handle_yes_button"
+          hx-swap="outerHTML"
+        >
+          YES
+        </button>
+        <button
+          id="no-btn"
+          hx-trigger="click"
+          hx-post="/handle-no-button"
           hx-swap="outerHTML"
           style="
             position: relative;

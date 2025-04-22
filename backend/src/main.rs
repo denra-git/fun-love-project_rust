@@ -6,9 +6,9 @@ use std::sync::atomic::{AtomicUsize, Ordering};
 static CLICK_COUNT: AtomicUsize = AtomicUsize::new(0);
 
 
-// Handle button movement
-#[post("/move-button")]
-async fn move_button() -> impl Responder {
+// Handle no button movement
+#[post("/handle-no-button")]
+async fn handle_no_button() -> impl Responder {
     let mut rng = rand::rng();
     
     let max_x = 400;  
@@ -23,10 +23,9 @@ async fn move_button() -> impl Responder {
      
     HttpResponse::Ok().body(format!(
         r#"<button
-          class="no_button"
-          id="runaway-btn"
+          id="no-btn"
           hx-trigger="click"
-          hx-post="/move-button"
+          hx-post="/handle-no-button"
           hx-swap="outerHTML"
           style="
             position: relative;
@@ -60,7 +59,7 @@ async fn move_button() -> impl Responder {
       <h3> click if you are ready for your last chance</h3>
       <button style="
         background: black;
-        padding: 20px">
+        font-size: 1rem;">
         another chance?
       </button>
     </div>"#,
@@ -70,13 +69,39 @@ async fn move_button() -> impl Responder {
     
 }
 
+//handle yes button
+#[post("/handle_yes_button")]
+async fn handle_yes_button()->impl Responder {
+  HttpResponse::Ok().body(format!(
+    r#"<div style="
+      position: fixed;
+      top: 50%;
+      left: 40%;
+      transform: translate(-30%, -50%);
+      background-color: #2e7d32;
+      padding: 5rem 10rem;
+      border-radius: 8px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+      min-width: 300px;
+      text-align: center;">
+      <h2 style="
+        font-size: 2rem;">
+        "It was perfectly obvious"</h2>
+      </h2>
+      <h3> lucky you</h3>
+    </div>"#))
+   
+}
+
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     HttpServer::new(|| {
         App::new()
             // Register the POST handler
-            .service(move_button)
+            .service(handle_no_button)
+            .service(handle_yes_button)
             // Serve static files (HTML/CSS/JS)
             .service(Files::new("/", "../frontend").index_file("index.html"))
     })
