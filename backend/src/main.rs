@@ -37,7 +37,7 @@ async fn handle_no_button() -> impl Responder {
             </button>"###,
         new_x, new_y))
         
-  }else {
+  } else {
     HttpResponse::Ok().body(format!(
       r###" <button
               id="no-btn"
@@ -55,22 +55,37 @@ async fn handle_no_button() -> impl Responder {
             <div id="message-container" style=" background-color: rgb(161, 2, 2); z-index: 1192;">
               <h2 style="font-size: 2rem;"> THIS IS A SERIOUS WARNING</h2>
               <h3>  click if you are ready for your last chance  </h3>
-              <button style="background: black; font-size: 1rem;">  another chance?  </button>
+              <button 
+               hx-trigger="click"
+               hx-post="/handle_another_chance_btn"
+               hx-swap="outerHTML"
+               hx-target="#message-container"
+               style="background: black; font-size: 1rem;">
+                 another chance?  
+              </button>
             </div>"###,
      ))
-  }
-
-    
+  } 
 }
 
 //handle yes button
 #[post("/handle_yes_button")]
 async fn handle_yes_button()->impl Responder {
   HttpResponse::Ok().body(format!(
-    r###"<div id="message-container" style=" background-color: #2e7d32; z-index: 1192;">
+    r#"<div id="message-container" style=" background-color: #2e7d32; z-index: 1192;">
            <h2 style=" font-size: 2rem;"> "It was perfectly obvious" </h2>
            <h3> lucky you</h3>
-         </div>"###))
+         </div>"#))
+}
+
+//handle another chance button
+#[post("/handle_another_chance_btn")]
+async fn handle_another_chance_btn()->impl Responder {
+  HttpResponse::Ok().body(
+    r#"<div id="message-container" style=" background-color: #2e7d32; visibility: hidden;">
+           <h2 style=" font-size: 2rem;"> "It was perfectly obvious" </h2>
+           <h3> lucky you</h3>
+         </div>"#)
 }
 
 
@@ -81,6 +96,7 @@ async fn main() -> std::io::Result<()> {
             // Register the POST handler
             .service(handle_no_button)
             .service(handle_yes_button)
+            .service(handle_another_chance_btn)
             // Serve static files (HTML/CSS/JS)
             .service(Files::new("/", "../frontend").index_file("index.html"))
     })
