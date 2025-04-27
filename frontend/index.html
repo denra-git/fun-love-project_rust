@@ -16,6 +16,7 @@
           hx-trigger="click"
           hx-post="/handle_yes_button"
           hx-swap="outerHTML"
+          hx-target="#message-container"
         >
           YES
         </button>
@@ -24,6 +25,7 @@
           hx-trigger="click"
           hx-post="/handle-no-button"
           hx-swap="outerHTML"
+          hx-target="#no-btn"
           style="
             position: relative;
             left: 0px;
@@ -35,6 +37,7 @@
         </button>
       </div>
     </div>
+    <div id="message-container"></div>
 
     <script src="https://unpkg.com/htmx.org@1.9.6"></script>
   </body>

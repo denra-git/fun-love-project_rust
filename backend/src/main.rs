@@ -19,50 +19,44 @@ async fn handle_no_button() -> impl Responder {
 
     let chance_number = CLICK_COUNT.fetch_add(1, Ordering::SeqCst) + 1;
 
-  if chance_number <=1 {
+  if chance_number < 4 {
      
     HttpResponse::Ok().body(format!(
-        r#"<button
-          id="no-btn"
-          hx-trigger="click"
-          hx-post="/handle-no-button"
-          hx-swap="outerHTML"
-          style="
-            position: relative;
-            left: {}px;
-            top: {}px;
-            transition: all 0.3s ease;
-          "
-        >
-          NO
-        </button>"#,
+        r###"<button
+              id="no-btn"
+              hx-trigger="click"
+              hx-post="/handle-no-button"
+              hx-swap="outerHTML"
+              hx-target="#no-btn"
+              style="
+               position: relative;
+               left: {}px;
+               top: {}px;
+               transition: all 0.3s ease;">
+             NO
+            </button>"###,
         new_x, new_y))
         
   }else {
     HttpResponse::Ok().body(format!(
-      r#" <div style="
-      position: fixed;
-      top: 50%;
-      left: 40%;
-      transform: translate(-30%, -50%);
-      background-color: rgb(161, 2, 2);
-      padding: 5rem 10rem;
-      border-radius: 8px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-      z-index: 1000;
-      min-width: 300px;
-      text-align: center;">
-      <h2 style="
-        font-size: 2rem;">
-        THIS IS A SERIOUS WARRNING</h2>
-      </h2>
-      <h3> click if you are ready for your last chance</h3>
-      <button style="
-        background: black;
-        font-size: 1rem;">
-        another chance?
-      </button>
-    </div>"#,
+      r###" <button
+              id="no-btn"
+              hx-trigger="click"
+              hx-post="/handle-no-button"
+              hx-swap="outerHTML"
+              hx-target="#message-container"
+              style="
+               position: relative;
+               left: 0px;
+               top: 0px;
+               transition: all 0.3s ease;">
+             NO
+            </button>
+            <div id="message-container" style=" background-color: rgb(161, 2, 2); z-index: 1192;">
+              <h2 style="font-size: 2rem;"> THIS IS A SERIOUS WARNING</h2>
+              <h3>  click if you are ready for your last chance  </h3>
+              <button style="background: black; font-size: 1rem;">  another chance?  </button>
+            </div>"###,
      ))
   }
 
@@ -73,25 +67,10 @@ async fn handle_no_button() -> impl Responder {
 #[post("/handle_yes_button")]
 async fn handle_yes_button()->impl Responder {
   HttpResponse::Ok().body(format!(
-    r#"<div style="
-      position: fixed;
-      top: 50%;
-      left: 40%;
-      transform: translate(-30%, -50%);
-      background-color: #2e7d32;
-      padding: 5rem 10rem;
-      border-radius: 8px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-      z-index: 1000;
-      min-width: 300px;
-      text-align: center;">
-      <h2 style="
-        font-size: 2rem;">
-        "It was perfectly obvious"</h2>
-      </h2>
-      <h3> lucky you</h3>
-    </div>"#))
-   
+    r###"<div id="message-container" style=" background-color: #2e7d32; z-index: 1192;">
+           <h2 style=" font-size: 2rem;"> "It was perfectly obvious" </h2>
+           <h3> lucky you</h3>
+         </div>"###))
 }
 
 
