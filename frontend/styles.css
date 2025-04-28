@@ -9,6 +9,10 @@ body {
   font-family: "Comic Sans MS", cursive, sans-serif;
 }
 
+h2 {
+  font-size: 2rem;
+}
+
 button {
   color: white;
   border-radius: 20px;
@@ -76,4 +80,24 @@ button {
   border-radius: 8px;
   min-width: 300px;
   z-index: -1192;
+}
+
+.yes-btn-message {
+  background-color: #2e7d32;
+  z-index: 1192 !important ;
+}
+.no-btn-message {
+  background-color: rgb(161, 2, 2);
+  z-index: 1192 !important ;
+}
+
+.another-chance-btn-message {
+  visibility: hidden;
+}
+
+.last-no-btn-message {
+  background-color: black;
+  color: white;
+  padding: 10rem 12rem !important ;
+  z-index: 1192 !important ;
 }
