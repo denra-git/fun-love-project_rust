@@ -20,14 +20,14 @@ fn generate_no_button(target:&str ,x: i32, y: i32) -> String {
   )
 }
 
-// fn generate_message(title:&str,p:&str, class:&str) -> String {
-//   format!(
-//       r#"<div id="message-container" class="{}-btn-message">
-//            <h2>"{}"</h2>
-//            <h3>{}</h3>
-//          </div>"#,title,p,class
-//   )
-// }
+fn generate_message(class:&str,title:&str,p:&str ) -> String {
+  format!(
+      r##"<div id="message-container" class="{}-btn-message">
+           <h2>"{}"</h2>
+           <h3>{}</h3>
+         </div>"##,class,title,p
+  )
+}
 
 
 // Handle no button movement
@@ -45,8 +45,8 @@ async fn handle_no_button() -> impl Responder {
 
 
     match chance_number {
-        0 .. 4 =>  HttpResponse::Ok().body(generate_no_button("no-btn", new_x, new_y)),
-        4 => HttpResponse::Ok().body(format!("{}{}",generate_no_button("message-container", 0, 0),
+        0 .. 5 =>  HttpResponse::Ok().body(generate_no_button("no-btn", new_x, new_y)),
+        5 => HttpResponse::Ok().body(format!("{}{}",generate_no_button("message-container", 0, 0),
        format!(r###" <div id="message-container" class="{}-btn-message">
                 <h2> THIS IS A SERIOUS WARNING</h2>
                 <h3>  click if you are ready for your last chance  </h3>
@@ -59,29 +59,20 @@ async fn handle_no_button() -> impl Responder {
                    another chance?  
                 </button>
               </div>"###,"no") )),
-        _=> HttpResponse::Ok().body(format!(
-          r#"<div id="message-container" class="{}-btn-message">
-                 <h2>"YOU ARE SO DEAD"</h2>
-               </div>"#,"last-no")),
+        _=> HttpResponse::Ok().body(generate_message("last-no", "'YOU ARE SO DEAD'", "",)),
   } 
 }
 
 //handle yes button
 #[post("/handle_yes_button")]
 async fn handle_yes_button()->impl Responder {
-  HttpResponse::Ok().body(format!(
-    r#"<div id="message-container" class="{}-btn-message">
-           <h2>"It was perfectly obvious"</h2>
-           <h3>lucky you</h3>
-         </div>"#,"yes"))
+  HttpResponse::Ok().body(generate_message( "yes","'It was perfectly obvious'", "lucky you"))
 }
 
 //handle another chance button
 #[post("/handle_another_chance_btn")]
 async fn handle_another_chance_btn()->impl Responder {
-  HttpResponse::Ok().body(format!(
-    r#"<div id="message-container" class="{}-btn-message"></div>"#,"another-chance")
-)
+  HttpResponse::Ok().body(r#""#)
 }
 
 
